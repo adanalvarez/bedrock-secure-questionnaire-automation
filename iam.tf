@@ -145,8 +145,8 @@ resource "aws_iam_role" "lambda_role_security_questions" {
 # Permissions for logs, S3 access, and Bedrock calls
 data "aws_iam_policy_document" "lambda_permissions_security_questions" {
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
@@ -167,8 +167,8 @@ data "aws_iam_policy_document" "lambda_permissions_security_questions" {
   }
 
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "bedrock:RetrieveAndGenerate",
       "bedrock:Retrieve"
     ]
@@ -178,8 +178,8 @@ data "aws_iam_policy_document" "lambda_permissions_security_questions" {
   }
 
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "bedrock:getInferenceProfile",
       "bedrock:InvokeModel"
     ]
@@ -187,8 +187,8 @@ data "aws_iam_policy_document" "lambda_permissions_security_questions" {
   }
 
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "bedrock:InvokeModel"
     ]
     resources = [local.foundation_model_arn]
@@ -210,8 +210,8 @@ resource "aws_iam_role" "lambda_role_sync_kb" {
 # Permissions for logs and starting ingestion
 data "aws_iam_policy_document" "lambda_permissions_sync_kb" {
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
@@ -220,8 +220,8 @@ data "aws_iam_policy_document" "lambda_permissions_sync_kb" {
   }
 
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "bedrock:StartIngestionJob"
     ]
     resources = [aws_bedrockagent_knowledge_base.security_data.arn]

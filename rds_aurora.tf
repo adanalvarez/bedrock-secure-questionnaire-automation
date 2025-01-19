@@ -23,7 +23,7 @@ module "aurora_postgresql_serverless" {
     max_capacity = var.max_capacity
   }
 
-  enable_http_endpoint                 = true
+  enable_http_endpoint                = true
   master_username                     = var.admin_user_name
   manage_master_user_password         = true
   storage_encrypted                   = true
