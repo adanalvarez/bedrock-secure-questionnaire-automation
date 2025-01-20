@@ -80,5 +80,6 @@ Infrastructure-as-code for a serverless knowledge base using Amazon Bedrock, Aur
 <p align="center">
   <img src="./answerquestions.PNG" alt="AnswerQuestions" width="300" />
 </p>
+
 ## Future work
 Currently, the Lambda code uses straightforward prompts for retrieval and generation. I’m exploring ways to refine or optimize these prompts for better, more accurate responses, especially for nuanced or lengthy security questionnaires. Feel free to customize the prompt strings in the Lambda code.
