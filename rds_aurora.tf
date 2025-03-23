@@ -46,6 +46,9 @@ module "aurora_postgresql_serverless" {
 }
 
 resource "null_resource" "enable_pgvector" {
+  triggers = {
+    version = "1.0"  # Bump this string whenever you need to re-run
+  }
   # Create the pgvector extension and needed schema/table
   provisioner "local-exec" {
     command = <<-EOT
@@ -77,6 +80,23 @@ resource "null_resource" "enable_pgvector" {
                  chunks TEXT,
                  embedding vector(1024)
                )"
+
+      # Create a GIN index for text search
+      aws rds-data execute-statement \
+        --region="${var.aws_region}" \
+        --resource-arn="${module.aurora_postgresql_serverless.cluster_arn}" \
+        --secret-arn="${module.aurora_postgresql_serverless.cluster_master_user_secret[0].secret_arn}" \
+        --database="${var.database_name}" \
+        --sql="CREATE INDEX IF NOT EXISTS bedrock_knowledge_base_text_search_idx ON bedrock_integration.bedrock_knowledge_base USING gin (to_tsvector('simple', chunks))"
+
+      # Create an HNSW index for vector search
+      aws rds-data execute-statement \
+        --region="${var.aws_region}" \
+        --resource-arn="${module.aurora_postgresql_serverless.cluster_arn}" \
+        --secret-arn="${module.aurora_postgresql_serverless.cluster_master_user_secret[0].secret_arn}" \
+        --database="${var.database_name}" \
+        --sql="CREATE INDEX IF NOT EXISTS bedrock_knowledge_base_vector_search_idx ON bedrock_integration.bedrock_knowledge_base USING hnsw (embedding vector_cosine_ops)"
+
     EOT
   }
 
